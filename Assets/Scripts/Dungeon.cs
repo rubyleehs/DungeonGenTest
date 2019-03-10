@@ -48,6 +48,8 @@ namespace Dungeon
         public MeshLayer wallMeshLayer;
         public MeshLayer floorMeshLayer;
 
+        public DungeonDecoPlacer decoPlacer;
+
         public void Init(Vector2Int _size, int maxSplitVariance, int minSubAreaSize)
         {
             transparent = I_transparent;
@@ -57,13 +59,16 @@ namespace Dungeon
             for (int i = 0; i < I_wallSpritesDict.Length; i++) wallSpritesDict.Add(I_wallSpritesDict[i].key, I_wallSpritesDict[i].sprites);
             for (int i = 0; i < I_floorSpritesDict.Length; i++) floorSpritesDict.Add(I_floorSpritesDict[i].key, I_floorSpritesDict[i].sprites);
 
-            wallMeshLayer.meshFilter.mesh = MeshGen.GridMeshGen.CreateNewGrid(size, cellSize, Vector2.zero, ref wallMeshLayer.meshPositioner);
+            wallMeshLayer.meshFilter.mesh = MeshGen.GridMeshGen.CreateNewGrid(size, cellSize, Vector2.up * cellSize * 0.5f, ref wallMeshLayer.meshPositioner);
             floorMeshLayer.meshFilter.mesh = MeshGen.GridMeshGen.CreateNewGrid(size, cellSize, Vector2.zero, ref floorMeshLayer.meshPositioner);
 
             DungeonGen.GenerateNewDungeon(this, _size,maxSplitVariance, minSubAreaSize);
             DungeonVisualGen.SetupCellVisualElements(ref cells);
             DungeonVisualGen.CreateDungeonTex(ref wallMeshLayer.mainTex, ref wallSpritesDict, ref cells, cellPixelSize);
             DungeonVisualGen.CreateDungeonTex(ref floorMeshLayer.mainTex, ref floorSpritesDict, ref cells, cellPixelSize);
+
+            decoPlacer.Init(cellSize);
+            decoPlacer.PlaceDecos(ref cells);
         }
     }
 }

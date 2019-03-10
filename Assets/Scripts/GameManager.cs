@@ -6,8 +6,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public Dungeon.Dungeon I_dungeon;
-    public Dungeon.DungeonDecoPlacer dungeonDecoPlacer;
     public static Dungeon.Dungeon dungeon;
+    public CamCG camCG;
 
     [Header("Dungeon Generation")]
     public Vector2Int dungeonSize;
@@ -18,7 +18,18 @@ public class GameManager : MonoBehaviour
     {
         dungeon = I_dungeon;
         dungeon.Init(dungeonSize, dungeonMaxSplitVariance, dungeonMinSubAreaSize);
-        dungeonDecoPlacer.Init();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            dungeon.Init(dungeonSize, dungeonMaxSplitVariance, dungeonMinSubAreaSize);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            camCG.enabled = !camCG.enabled;
+        }
     }
 
 }
